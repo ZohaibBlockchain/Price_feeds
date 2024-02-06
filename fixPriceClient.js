@@ -5,13 +5,11 @@ dotenv.config();
 import currencyEmitter from './index.js';
 
 
-let counter = 0;
+
 const fixParser = new FIXParser();
 const SENDER = process.env.FIX_SENDER;
 const TARGET = process.env.FIX_TARGET;
 const Password = process.env.FIX_PASSWORD;
-
-
 
 
 

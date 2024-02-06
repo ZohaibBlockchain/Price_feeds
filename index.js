@@ -2,7 +2,7 @@
 import express from 'express';
 import EventEmitter from 'events';
 import { fixClient } from './fixPriceClient.js';
-class CurrencyEmitter extends EventEmitter {}
+class CurrencyEmitter extends EventEmitter { }
 const currencyEmitter = new CurrencyEmitter();
 const dotenv = await import('dotenv');
 dotenv.config();
@@ -43,10 +43,12 @@ currencyEmitter.on('currencyUpdate', (data) => {
 export default currencyEmitter;
 
 
+
 // Define REST API endpoint to get currency prices
 app.get('/prices', (req, res) => {
-  let currencies = [EUR, GBP, CAD, JPY, CHF];
-    res.json(currencies);
+  const timestamp = Date.now();
+  let currencies = [EUR, GBP, CAD, JPY, CHF,timestamp];
+  res.json(currencies);
 });
 
 // Start the Express server
