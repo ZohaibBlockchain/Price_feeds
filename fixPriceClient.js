@@ -11,6 +11,10 @@ const SENDER = process.env.FIX_SENDER;
 const TARGET = process.env.FIX_TARGET;
 const Password = process.env.FIX_PASSWORD;
 
+
+
+
+
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 10000000; // Maximum number of reconnect attempts
 const RECONNECT_INTERVAL = 100; // Initial reconnect interval in milliseconds
@@ -33,15 +37,15 @@ export function fixClient() {
         tlsUseSNI: false,
         logging: false,
         onOpen: () => {
-            console.log('Open');
+            console.log('Establishing connection with enpoint for prices.');
             sendLogon();
             reconnectAttempts = 0;
         },
         onMessage: async (message) => {
             const msg = message.encode('|');
             const parsedJSON = parseFixMessage(msg);
-
             if (parsedJSON['35'] === 'A') {
+                console.log('connection Established and logon completed.');
                 console.log('Now Requesting for Market Data');
                 requestMarketData();
             } else if (parsedJSON['35'] === 'W') {

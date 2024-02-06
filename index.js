@@ -4,10 +4,12 @@ import EventEmitter from 'events';
 import { fixClient } from './fixPriceClient.js';
 class CurrencyEmitter extends EventEmitter {}
 const currencyEmitter = new CurrencyEmitter();
+const dotenv = await import('dotenv');
+dotenv.config();
 // Initialize Express app
 const app = express();
-const port = 3000; // Port where the server will listen
 
+const port = process.env.REST_API_PORT;// Port where the server will listen
 
 let EUR = { symbol: 'EURUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
 let GBP = { symbol: 'GBPUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
