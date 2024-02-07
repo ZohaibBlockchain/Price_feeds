@@ -18,26 +18,27 @@ let JPY = { symbol: 'JPYUSD', bid: undefined, ask: undefined, lastUpdateTime: un
 let CHF = { symbol: 'CHFUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
 
 
+
 currencyEmitter.on('currencyUpdate', (data) => {
   if (data.symbol === 'EURUSD') {
     EUR = data;
-    // console.log('Updated EUR data:', data);
+    //  console.log('Updated EURUSD data:', data);
   }
   if (data.symbol === 'GBPUSD') {
     GBP = data;
-    // console.log('Updated EUR data:', data);
+    //  console.log('Updated GBPUSD data:', data);
   }
   if (data.symbol === 'JPYUSD') {
     JPY = data;
-    // console.log('Updated EUR data:', data);
+    //  console.log('Updated JPYUSD data:', data);
   }
   if (data.symbol === 'CADUSD') {
     CAD = data;
-    // console.log('Updated EUR data:', data);
+    //  console.log('Updated CADUSD data:', data);
   }
   if (data.symbol === 'CHFUSD') {
     CHF = data;
-    // console.log('Updated EUR data:', data);
+    //  console.log('Updated CHFUSD data:', data);
   }
 });
 export default currencyEmitter;

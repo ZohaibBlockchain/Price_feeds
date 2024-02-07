@@ -4,7 +4,7 @@ const dotenv = await import('dotenv');
 dotenv.config();
 import currencyEmitter from './index.js';
 
-
+const requestSymbolsList = [{symbol:'FX.EURUSD',id:'1'},{symbol:'FX.GBPUSD',id:'2'},{symbol:'FX.CADUSD',id:'3'},{symbol:'FX.JPYUSD',id:'4'},{symbol:'FX.CHFUSD',id:'5'}]
 
 const fixParser = new FIXParser();
 const SENDER = process.env.FIX_SENDER;
@@ -45,7 +45,7 @@ export function fixClient() {
             if (parsedJSON['35'] === 'A') {
                 console.log('connection Established and logon completed.');
                 console.log('Now Requesting for Market Data');
-                requestMarketData();
+                // requestMarketData();
             } else if (parsedJSON['35'] === 'W') {
                 const { symbol, bidPrice, askPrice } = updateBidAskPricesAndSymbol(msg);
                 const currentTime = Date.now();
@@ -107,10 +107,11 @@ const sendLogon = () => {
     fixParser.send(logon);
 };
 
-const requestSymbolsList = [{symbol:'FX.EURUSD',id:'1'},{symbol:'FX.GBPUSD',id:'2'}]
+
 
 const requestMarketData = () => {
     requestSymbolsList.forEach(element => {
+        console.log(element.symbol);
         const MD = fixParser.createMessage(
             new Field(Fields.MsgType, Messages.MarketDataRequest),
             new Field(Fields.MsgSeqNum, fixParser.getNextTargetMsgSeqNum()),
