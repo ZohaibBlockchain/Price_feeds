@@ -27,35 +27,35 @@ let RUB = { symbol: 'USDRUB', bid: undefined, ask: undefined, lastUpdateTime: un
 currencyEmitter.on('currencyUpdate', (data) => {
   if (data.symbol === 'EURUSD') {
     EUR = data;
-    console.log('Updated EURUSD data:', data);
+    // console.log('Updated EURUSD data:', data);
   }
   if (data.symbol === 'GBPUSD') {
     GBP = data;
-    console.log('Updated GBPUSD data:', data);
+    // console.log('Updated GBPUSD data:', data);
   }
   if (data.symbol === 'AUDUSD') {
     AUD = data;
-    console.log('Updated AUDUSD data:', data);
+    // console.log('Updated AUDUSD data:', data);
   }
   if (data.symbol === 'NZDUSD') {
     NZD = data;
-    console.log('Updated NZDUSD data:', data);
+    // console.log('Updated NZDUSD data:', data);
   }
   if (data.symbol === 'USDJPY') {
     JPY = data;
-    console.log('Updated JPYUSD data:', data);
+    // console.log('Updated JPYUSD data:', data);
   }
   if (data.symbol === 'USDCAD') {
     CAD = data;
-    console.log('Updated CADUSD data:', data);
+    // console.log('Updated CADUSD data:', data);
   }
   if (data.symbol === 'USDCHF') {
     CHF = data;
-    console.log('Updated CHFUSD data:', data);
+    // console.log('Updated CHFUSD data:', data);
   }
   if (data.symbol === 'USDRUB') {
     RUB = data;
-    console.log('Updated RUBUSD data:', data);
+    // console.log('Updated RUBUSD data:', data);
   }
 });
 export default currencyEmitter;
