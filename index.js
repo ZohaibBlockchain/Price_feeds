@@ -21,7 +21,7 @@ let CAD = { symbol: 'USDCAD', bid: undefined, ask: undefined, lastUpdateTime: un
 let JPY = { symbol: 'USDJPY', bid: undefined, ask: undefined, lastUpdateTime: undefined };
 let CHF = { symbol: 'USDCHF', bid: undefined, ask: undefined, lastUpdateTime: undefined };
 let RUB = { symbol: 'USDRUB', bid: undefined, ask: undefined, lastUpdateTime: undefined };
-
+let HKD = { symbol: 'USDHKD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
 
 
 currencyEmitter.on('currencyUpdate', (data) => {
@@ -57,6 +57,10 @@ currencyEmitter.on('currencyUpdate', (data) => {
     RUB = data;
     // console.log('Updated RUBUSD data:', data);
   }
+  if (data.symbol === 'USDHKD') {
+    HKD = data;
+    // console.log('Updated HKDUSD data:', data);
+  }
 });
 export default currencyEmitter;
 
@@ -65,7 +69,7 @@ export default currencyEmitter;
 // Define REST API endpoint to get currency prices
 app.get('/prices', (req, res) => {
   const timestamp = Date.now();
-  let currencies = [EUR, GBP, AUD, NZD, CAD, JPY, CHF, RUB, timestamp];
+  let currencies = [EUR, GBP, AUD, NZD, CAD, JPY, CHF, RUB, HKD, timestamp];
   res.json(currencies);
 });
 

@@ -4,7 +4,7 @@ const dotenv = await import('dotenv');
 dotenv.config();
 import currencyEmitter from './index.js';
 
-const requestSymbolsList = [{ symbol: 'FX.EURUSD', id: '1' }, { symbol: 'FX.GBPUSD', id: '2' }, { symbol: 'FX.AUDUSD', id: '3' }, { symbol: 'FX.NZDUSD', id: '4' }, { symbol: 'FX.USDJPY', id: '5' }, { symbol: 'FX.USDCHF', id: '6' }, { symbol: 'FX.USDCAD', id: '7' }, { symbol: 'FX.USDRUB', id: '8' }]
+const requestSymbolsList = [{ symbol: 'FX.EURUSD', id: '1' }, { symbol: 'FX.GBPUSD', id: '2' }, { symbol: 'FX.AUDUSD', id: '3' }, { symbol: 'FX.NZDUSD', id: '4' }, { symbol: 'FX.USDJPY', id: '5' }, { symbol: 'FX.USDCHF', id: '6' }, { symbol: 'FX.USDCAD', id: '7' }, { symbol: 'FX.USDRUB', id: '8' }, { symbol: 'FX.USDHKD', id: '9' }]
 
 
 
@@ -29,6 +29,7 @@ export function fixClient() {
     let JPY = { symbol: 'USDJPY', bid: undefined, ask: undefined, lastUpdateTime: undefined };
     let CHF = { symbol: 'USDCHF', bid: undefined, ask: undefined, lastUpdateTime: undefined };
     let RUB = { symbol: 'USDRUB', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+    let HKD = { symbol: 'USDHKD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
 
 
 
@@ -43,7 +44,7 @@ export function fixClient() {
         tlsUseSNI: false,
         logging: false,
         onOpen: () => {
-            console.log('Establishing connection with enpoint for prices.');
+            console.log('Establishing connection with endpoint for prices.');
             sendLogon();
             reconnectAttempts = 0;
         },
@@ -101,11 +102,17 @@ export function fixClient() {
                         CHF.lastUpdateTime = currentTime;
                         currencyEmitter.emit('currencyUpdate', CHF);
                         break;
-                        case 'USDRUB':
+                    case 'USDRUB':
                         RUB.bid = (1 / bidPrice);
                         RUB.ask = (1 / askPrice);
                         RUB.lastUpdateTime = currentTime;
                         currencyEmitter.emit('currencyUpdate', RUB);
+                        break;
+                    case 'USDHKD':
+                        HKD.bid = (1 / bidPrice);
+                        HKD.ask = (1 / askPrice);
+                        HKD.lastUpdateTime = currentTime;
+                        currencyEmitter.emit('currencyUpdate', HKD);
                         break;
                     default:
                         console.log('Unknown symbol:', symbol);
