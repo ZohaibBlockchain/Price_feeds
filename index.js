@@ -65,7 +65,7 @@ export default currencyEmitter;
 // Define REST API endpoint to get currency prices
 app.get('/prices', (req, res) => {
   const timestamp = Date.now();
-  let currencies = [EUR, GBP, CAD, JPY, CHF, timestamp];
+  let currencies = [EUR, GBP, AUD, NZD, CAD, JPY, CHF, RUB, timestamp];
   res.json(currencies);
 });
 
