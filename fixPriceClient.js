@@ -4,7 +4,9 @@ const dotenv = await import('dotenv');
 dotenv.config();
 import currencyEmitter from './index.js';
 
-const requestSymbolsList = [{symbol:'FX.EURUSD',id:'1'},{symbol:'FX.GBPUSD',id:'2'},{symbol:'FX.CADUSD',id:'3'},{symbol:'FX.JPYUSD',id:'4'},{symbol:'FX.CHFUSD',id:'5'}]
+const requestSymbolsList = [{ symbol: 'FX.EURUSD', id: '1' }, { symbol: 'FX.GBPUSD', id: '2' }, { symbol: 'FX.AUDUSD', id: '3' }, { symbol: 'FX.NZDUSD', id: '4' }, { symbol: 'FX.USDJPY', id: '5' }, { symbol: 'FX.USDCHF', id: '6' }, { symbol: 'FX.USDCAD', id: '7' }, { symbol: 'FX.USDRUB', id: '8' }]
+
+
 
 const fixParser = new FIXParser();
 const SENDER = process.env.FIX_SENDER;
@@ -20,9 +22,15 @@ const RECONNECT_INTERVAL = 100; // Initial reconnect interval in milliseconds
 export function fixClient() {
     let EUR = { symbol: 'EURUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
     let GBP = { symbol: 'GBPUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
-    let CAD = { symbol: 'CADUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
-    let JPY = { symbol: 'JPYUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
-    let CHF = { symbol: 'CHFUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+    let AUD = { symbol: 'AUDUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+    let NZD = { symbol: 'NZDUSD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+
+    let CAD = { symbol: 'USDCAD', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+    let JPY = { symbol: 'USDJPY', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+    let CHF = { symbol: 'USDCHF', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+    let RUB = { symbol: 'USDRUB', bid: undefined, ask: undefined, lastUpdateTime: undefined };
+
+
 
     const CONNECT_PARAMS = {
         host: 'platform.unity.finance',
@@ -45,10 +53,11 @@ export function fixClient() {
             if (parsedJSON['35'] === 'A') {
                 console.log('connection Established and logon completed.');
                 console.log('Now Requesting for Market Data');
-                // requestMarketData();
+                requestMarketData();
             } else if (parsedJSON['35'] === 'W') {
                 const { symbol, bidPrice, askPrice } = updateBidAskPricesAndSymbol(msg);
                 const currentTime = Date.now();
+                // console.log(symbol)
                 switch (symbol) {
                     case 'EURUSD':
                         EUR.bid = bidPrice;
@@ -62,23 +71,41 @@ export function fixClient() {
                         GBP.lastUpdateTime = currentTime;
                         currencyEmitter.emit('currencyUpdate', GBP);
                         break;
-                    case 'CADUSD':
-                        CAD.bid = bidPrice;
-                        CAD.ask = askPrice;
+                    case 'AUDUSD':
+                        AUD.bid = bidPrice;
+                        AUD.ask = askPrice;
+                        AUD.lastUpdateTime = currentTime;
+                        currencyEmitter.emit('currencyUpdate', AUD);
+                        break;
+                    case 'NZDUSD':
+                        NZD.bid = bidPrice;
+                        NZD.ask = askPrice;
+                        NZD.lastUpdateTime = currentTime;
+                        currencyEmitter.emit('currencyUpdate', NZD);
+                        break;
+                    case 'USDCAD':
+                        CAD.bid = (1 / bidPrice);
+                        CAD.ask = (1 / askPrice);
                         CAD.lastUpdateTime = currentTime;
                         currencyEmitter.emit('currencyUpdate', CAD);
                         break;
-                    case 'JPYUSD':
-                        JPY.bid = bidPrice;
-                        JPY.ask = askPrice;
+                    case 'USDJPY':
+                        JPY.bid = (1 / bidPrice);
+                        JPY.ask = (1 / askPrice);
                         JPY.lastUpdateTime = currentTime;
                         currencyEmitter.emit('currencyUpdate', JPY);
                         break;
-                    case 'CHFUSD':
-                        CHF.bid = bidPrice;
-                        CHF.ask = askPrice;
+                    case 'USDCHF':
+                        CHF.bid = (1 / bidPrice);
+                        CHF.ask = (1 / askPrice);
                         CHF.lastUpdateTime = currentTime;
                         currencyEmitter.emit('currencyUpdate', CHF);
+                        break;
+                        case 'USDRUB':
+                        RUB.bid = (1 / bidPrice);
+                        RUB.ask = (1 / askPrice);
+                        RUB.lastUpdateTime = currentTime;
+                        currencyEmitter.emit('currencyUpdate', RUB);
                         break;
                     default:
                         console.log('Unknown symbol:', symbol);
@@ -121,7 +148,7 @@ const requestMarketData = () => {
             new Field(Fields.MDReqID, element.id),
             new Field(Fields.SubscriptionRequestType, '1'),
             new Field(Fields.MarketDepth, '1'),
-            new Field(Fields.MDUpdateType, '1'),
+            new Field(Fields.MDUpdateType, '0'),
             new Field(Fields.NoRelatedSym, '1'),
             new Field(Fields.Symbol, element.symbol),
             new Field(Fields.NoMDEntryTypes, '2'),
